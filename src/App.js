@@ -1,11 +1,13 @@
 import React from 'react'
 import BookSelf from './BookSelf'
 import * as API from './BooksAPI'
+import ListBooks from './ListBooks'
 import './App.css'
 
 class BooksApp extends React.Component {
     state = {
-        books : []
+        books : [],
+        showSearchPage: true
     }
 
     componentDidMount(){
@@ -15,7 +17,7 @@ class BooksApp extends React.Component {
             });
         })
     }
-
+    
     updateShelf = (currentBook, event) => {
         let newShelf = event.target.value;
         API.update(currentBook, newShelf).then(() => {
@@ -25,21 +27,21 @@ class BooksApp extends React.Component {
         })
     };
 
+    addToShelf = (book, event) =>{
+        console.log(book);
+        let newShelf = event.target.value;
+        API.update(book, newShelf).then(() => {
+            this.setState((prevState) => {
+                prevState.books.concat(book);
+            });
+        })
+    }
+
     render() {
         return (
             <div className="app">
                 {this.state.showSearchPage ? (
-                    <div className="search-books">
-                        <div className="search-books-bar">
-                            <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-                            <div className="search-books-input-wrapper">
-                                <input type="text" placeholder="Search by title or author"/>
-                            </div>
-                        </div>
-                        <div className="search-books-results">
-                            <ol className="books-grid"></ol>
-                        </div>
-                    </div>
+                    <ListBooks onAddShelf={this.addToShelf} />
                 ) : (
                     <BookSelf read={this.state.books.filter((book) => book.shelf === 'read')} wantToRead={this.state.books.filter((book) => book.shelf === 'wantToRead')} currentlyReading={this.state.books.filter((book) => book.shelf === 'currentlyReading')} onUpdateShelf={this.updateShelf}/>
                 )}
