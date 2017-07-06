@@ -30,7 +30,7 @@ class BookSelf extends React.Component {
                                                     </div>
                                                 </div>
                                                 <div className="book-title">{book.title}</div>
-                                                <div className="book-authors">{book.authors.map(name => name+" ")}</div>
+                                                <div className="book-authors">{book.authors.join(", ")}</div>
                                             </div>
                                         </li>
                                     ))}
@@ -57,7 +57,7 @@ class BookSelf extends React.Component {
                                                     </div>
                                                 </div>
                                                 <div className="book-title">{book.title}</div>
-                                                <div className="book-authors">{book.authors.map(name => name+" ")}</div>
+                                                <div className="book-authors">{book.authors.join(", ")}</div>
                                             </div>
                                         </li>
                                     ))}
@@ -84,7 +84,7 @@ class BookSelf extends React.Component {
                                                     </div>
                                                 </div>
                                                 <div className="book-title">{book.title}</div>
-                                                <div className="book-authors">{book.authors.map(name => name+" ")}</div>
+                                                <div className="book-authors">{book.authors.join(", ")}</div>
                                             </div>
                                         </li>
                                     ))}
