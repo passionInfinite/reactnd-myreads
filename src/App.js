@@ -3,11 +3,11 @@ import BookSelf from './BookSelf'
 import * as API from './BooksAPI'
 import ListBooks from './ListBooks'
 import './App.css'
+import { Route } from 'react-router-dom'
 
 class BooksApp extends React.Component {
     state = {
-        books : [],
-        showSearchPage: true
+        books : []
     }
 
     componentDidMount(){
@@ -27,24 +27,27 @@ class BooksApp extends React.Component {
         })
     };
 
-    addToShelf = (book, event) =>{
-        console.log(book);
+    addToShelf = (event, book) => {
         let newShelf = event.target.value;
         API.update(book, newShelf).then(() => {
-            this.setState((prevState) => {
-                prevState.books.concat(book);
-            });
+            book.shelf = newShelf;
+            this.setState((prevState) => ({
+                books: prevState.books.concat(book)
+            }));
         })
     }
 
     render() {
         return (
             <div className="app">
-                {this.state.showSearchPage ? (
+                <Route exact path="/" render={() => (
+                    <BookSelf read={this.state.books.filter((book) => book.shelf === 'read')}
+                     wantToRead={this.state.books.filter((book) => book.shelf === 'wantToRead')}
+                     currentlyReading={this.state.books.filter((book) => book.shelf === 'currentlyReading')} onUpdateShelf={this.updateShelf}/>
+                )}/>
+                <Route path="/search" render={() => (
                     <ListBooks onAddShelf={this.addToShelf} />
-                ) : (
-                    <BookSelf read={this.state.books.filter((book) => book.shelf === 'read')} wantToRead={this.state.books.filter((book) => book.shelf === 'wantToRead')} currentlyReading={this.state.books.filter((book) => book.shelf === 'currentlyReading')} onUpdateShelf={this.updateShelf}/>
-                )}
+                )}/>
             </div>
         )
     }

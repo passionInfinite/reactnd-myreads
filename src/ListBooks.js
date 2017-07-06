@@ -1,10 +1,12 @@
 import React from 'react'
 import * as API from './BooksAPI'
+import { Link } from 'react-router-dom'
 
 class ListBooks extends React.Component{
     state = {
         query: '',
-        searchBooks: []
+        searchBooks: [],
+        message: 'Search books using title or author in the search bar.'
     }
 
     updateQuery = (event) => {
@@ -14,20 +16,23 @@ class ListBooks extends React.Component{
                 if (books && !books.error) {
                     this.setState({
                         query: query,
-                        searchBooks: books
+                        searchBooks: books,
+                        message: ''
                     })
                 }
                 if (books.error) {
                     this.setState({
                         query: query,
-                        searchBooks: []
+                        searchBooks: [],
+                        message: 'No books found! Try with different keywords'
                     })
                 }
             })
         } else {
             this.setState({
                 query: '',
-                searchBooks: []
+                searchBooks: [],
+                message: 'Search books using title or author in the search bar.'
             });
         }
     }
@@ -36,12 +41,13 @@ class ListBooks extends React.Component{
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <a className="close-search">Close</a>
+                    <Link to="/" className="close-search">Close</Link>
                     <div className="search-books-input-wrapper">
                         <input type="text" placeholder="Search by title or author" onChange={(event) => {this.updateQuery(event)}}/>
                     </div>
                 </div>
                 <div className="search-books-results">
+                    {this.state.message && ( <h4 style={{textAlign: 'center' }}>{this.state.message}</h4>)}
                     <ol className="books-grid">
                         {this.state.searchBooks.map((book, index)=> (
                             <li key={index}>
@@ -49,7 +55,7 @@ class ListBooks extends React.Component{
                                     <div className="book-top">
                                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                                         <div className="book-shelf-changer">
-                                            <select value={book.shelf} id={book.id} onChange={this.props.onAddShelf.bind(this,book)}>
+                                            <select value={book.shelf} id={book.id} onChange={(event) => this.props.onAddShelf(event,book)}>
                                                 <option value="none" disabled>Move to...</option>
                                                 <option value="currentlyReading">Currently Reading</option>
                                                 <option value="wantToRead">Want to Read</option>
