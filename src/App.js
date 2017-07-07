@@ -37,6 +37,13 @@ class BooksApp extends React.Component {
         })
     }
 
+    isBookOnShelf = (book) => {
+        let currentShelf = this.state.books.filter((currentBook) => currentBook.id === book.id).map(book => {return book.shelf});
+        if(currentShelf.length !== 0){
+            return currentShelf[0];
+        }
+    }
+
     render() {
         return (
             <div className="app">
@@ -46,7 +53,7 @@ class BooksApp extends React.Component {
                      currentlyReading={this.state.books.filter((book) => book.shelf === 'currentlyReading')} onUpdateShelf={this.updateShelf}/>
                 )}/>
                 <Route path="/search" render={() => (
-                    <ListBooks onAddShelf={this.addToShelf} />
+                    <ListBooks onAddShelf={this.addToShelf} checkBookState={this.isBookOnShelf}/>
                 )}/>
             </div>
         )

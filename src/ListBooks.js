@@ -66,6 +66,7 @@ class ListBooks extends React.Component{
                                     </div>
                                     <div className="book-title">{book.title}</div>
                                     <div className="book-authors">{book.authors && book.authors.join(", ")}</div>
+                                    {this.props.checkBookState(book) && (<button style={{color:"white", backgroundColor: "#5d9add", border: "1px"}}>{this.props.checkBookState(book)}</button>)}
                                 </div>
                             </li>
                         ))}
