@@ -1,6 +1,7 @@
 import React from 'react'
 import * as API from './BooksAPI'
 import { Link } from 'react-router-dom'
+import Book from './Book'
 
 class ListBooks extends React.Component{
     state = {
@@ -51,23 +52,7 @@ class ListBooks extends React.Component{
                     <ol className="books-grid">
                         {this.state.searchBooks.map((book, index)=> (
                             <li key={index}>
-                                <div className="book">
-                                    <div className="book-top">
-                                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                                        <div className="book-shelf-changer">
-                                            <select value={book.shelf} id={book.id} onChange={(event) => {this.props.onAddShelf(event,book); this.props.onUpdateShelf(book, event)}}>
-                                                <option value="none" disabled>Move to...</option>
-                                                <option value="currentlyReading">Currently Reading</option>
-                                                <option value="wantToRead">Want to Read</option>
-                                                <option value="read">Read</option>
-                                                <option value="none">None</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="book-title">{book.title}</div>
-                                    <div className="book-authors">{book.authors && book.authors.join(", ")}</div>
-                                    {this.props.checkBookState(book) && (<button style={{color:"white", backgroundColor: "#5d9add", border: "1px"}}>{this.props.checkBookState(book)}</button>)}
-                                </div>
+                                <Book book={book}  onAddShelf={this.props.onAddShelf} checkBookState={this.props.checkBookState} onUpdateShelf={this.props.onUpdateShelf} showThumbnails={true}/>
                             </li>
                         ))}
                     </ol>
