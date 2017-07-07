@@ -53,7 +53,7 @@ class BooksApp extends React.Component {
                      currentlyReading={this.state.books.filter((book) => book.shelf === 'currentlyReading')} onUpdateShelf={this.updateShelf}/>
                 )}/>
                 <Route path="/search" render={() => (
-                    <ListBooks onAddShelf={this.addToShelf} checkBookState={this.isBookOnShelf}/>
+                    <ListBooks onAddShelf={this.addToShelf} checkBookState={this.isBookOnShelf} onUpdateShelf={this.updateShelf}/>
                 )}/>
             </div>
         )
